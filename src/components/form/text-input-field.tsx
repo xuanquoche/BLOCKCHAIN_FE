@@ -39,7 +39,7 @@ const TextInputField = <T extends FieldValues>({
             control={control}
             render={({ field }) => (
                 <FormItem className="dark:bg-form-foreground">
-                    <FormLabel>{label}</FormLabel>
+                    <FormLabel className='text-base'>{label}</FormLabel>
                     <FormControl>
                         <div className="relative">
                             <Input

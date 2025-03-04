@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config = {
-    content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+    content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}',  './src/**/*.{js,ts,jsx,tsx,mdx}'],
     prefix: '',
     theme: {
         container: {
@@ -21,7 +21,9 @@ const config = {
             height: { headerHeight: 'var(--header-height)' },
             margin: { headerHeight: 'var(--header-height)' },
             colors: {
-                
+              gray: {
+                300: 'var(--gray-300)'
+              }
             },
             borderRadius: {
                 lg: 'var(--radius)',
