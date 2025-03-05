@@ -12,20 +12,31 @@ export function Sidebar() {
       </div>
 
       <div className="mt-6">
-        <Link href="/" className="block">
-          <div className="px-4 py-2 bg-blue-700">
+        <Link href="/admin/" className="block">
+          <div className="px-4 py-2 hover:bg-blue-700">
             <div className="flex items-center gap-2">
               <span className="text-sm">Trang Chủ</span>
             </div>
           </div>
         </Link>
 
-        <div className="px-4 py-2 hover:bg-blue-700 cursor-pointer">
-          <div className="flex items-center gap-2">
-            <span className="text-sm">Cài đặt người dùng</span>
-            <ChevronRight className="w-4 h-4 ml-auto" />
+        <Link href="/admin/certificates" className="block">
+          <div className="px-4 py-2 hover:bg-blue-700">
+            <div className="flex items-center gap-2">
+              <span className="text-sm">Chứng chỉ</span>
+              <ChevronRight className="w-4 h-4 ml-auto" />
+            </div>
           </div>
-        </div>
+        </Link>
+
+        <Link href="" className="block">
+          <div className="px-4 py-2 hover:bg-blue-700">
+            <div className="flex items-center gap-2">
+              <span className="text-sm">Cài đặt</span>
+              <ChevronRight className="w-4 h-4 ml-auto" />
+            </div>
+          </div>
+        </Link>
       </div>
     </div>
   )

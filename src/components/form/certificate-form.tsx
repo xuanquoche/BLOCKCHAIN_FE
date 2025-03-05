@@ -1,12 +1,14 @@
 "use client"
+
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 import { certificateSchema, type CertificateFormValues } from "@/lib/schemas"
 
 interface CertificateFormProps {
@@ -32,11 +34,9 @@ export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Thêm Chứng chỉ</DialogTitle>
+          <DialogTitle>Thêm Chứng chỉ mới</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -47,7 +47,7 @@ export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
                 <FormItem>
                   <FormLabel>Tên chứng chỉ</FormLabel>
                   <FormControl>
-                    <Input placeholder="IELTS 7.0" {...field} />
+                    <Input placeholder="Chứng chỉ Trí tuệ nhân tạo" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -58,18 +58,9 @@ export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
               name="teacherId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Giảng viên phụ trách</FormLabel>
+                  <FormLabel>Mã giáo viên phụ trách</FormLabel>
                   <FormControl>
-                  <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="All" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">--None--</SelectItem>
-                  <SelectItem value="123">Thay A</SelectItem>
-                  <SelectItem value="234">Co B</SelectItem>
-                </SelectContent>
-              </Select>
+                    <Input placeholder="T001" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,7 +79,7 @@ export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="active">Hoạt động</SelectItem>
+                      <SelectItem value="active">Đang hoạt động</SelectItem>
                       <SelectItem value="inactive">Không hoạt động</SelectItem>
                     </SelectContent>
                   </Select>
@@ -98,9 +89,9 @@ export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
             />
             <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Close
+                Hủy
               </Button>
-              <Button type="submit">Thêm</Button>
+              <Button type="submit">Thêm chứng chỉ</Button>
             </div>
           </form>
         </Form>
