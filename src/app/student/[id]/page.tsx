@@ -44,13 +44,6 @@ export default function StudentCertificates() {
       {/* Student Information */}
       <div className="bg-white rounded-md shadow mb-8">
         <div className="p-6 flex items-center space-x-6">
-          <Image
-            src={studentData.avatar || "/placeholder.svg"}
-            alt={studentData.name}
-            width={100}
-            height={100}
-            className="rounded-full"
-          />
           <div>
             <h2 className="text-2xl font-bold">{studentData.name}</h2>
             <p className="text-gray-500">Mã số sinh viên: {studentData.id}</p>

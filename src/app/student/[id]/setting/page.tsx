@@ -13,39 +13,9 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
+import { passwordFormSchema, PasswordFormValues, profileFormSchema, ProfileFormValues } from "@/lib/schemas"
 
-const profileFormSchema = z.object({
-  fullName: z.string().min(2, {
-    message: "Họ và tên phải có ít nhất 2 ký tự.",
-  }),
-  email: z.string().email({
-    message: "Email không hợp lệ.",
-  }),
-  phone: z.string().min(10, {
-    message: "Số điện thoại phải có ít nhất 10 số.",
-  }),
-  bio: z.string().max(160).optional(),
-})
 
-const passwordFormSchema = z
-  .object({
-    currentPassword: z.string().min(8, {
-      message: "Mật khẩu phải có ít nhất 8 ký tự.",
-    }),
-    newPassword: z.string().min(8, {
-      message: "Mật khẩu mới phải có ít nhất 8 ký tự.",
-    }),
-    confirmPassword: z.string().min(8, {
-      message: "Xác nhận mật khẩu phải có ít nhất 8 ký tự.",
-    }),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Mật khẩu mới và xác nhận mật khẩu không khớp.",
-    path: ["confirmPassword"],
-  })
-
-type ProfileFormValues = z.infer<typeof profileFormSchema>
-type PasswordFormValues = z.infer<typeof passwordFormSchema>
 
 // This can come from your backend or auth provider in the future
 const defaultValues: Partial<ProfileFormValues> = {
