@@ -5,9 +5,9 @@ import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { TeacherForm } from "@/components/forms/teacher-form"
-import { StudentForm } from "@/components/forms/student-form"
-import { CertificateForm } from "@/components/forms/certificate-form"
+import { StudentForm } from "@/components/form/student-form"
+import { CertificateForm } from "@/components/form/certificate-form"
+import { TeacherForm } from "@/components/form/teacher-form"
 
 // ... rest of the imports
 

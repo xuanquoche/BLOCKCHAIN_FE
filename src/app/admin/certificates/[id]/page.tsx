@@ -1,16 +1,21 @@
 "use client"
 
 import Image from "next/image"
-import { Search } from 'lucide-react'
+import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useParams } from "next/navigation"
 
 export default function CertificateDetails() {
+  const params = useParams()
+  const certificateId = params.id
+
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-6">Thông tin chứng chỉ</h1>
-
+      <h1 className="text-2xl font-bold mb-6">Chi tiết Chứng chỉ</h1>
+      <p>Đang hiển thị thông tin chi tiết cho chứng chỉ có ID: {certificateId}</p>
+      {/* Add more detailed certificate information here */}
       {/* Certificate Information */}
       <div className="bg-white rounded-md shadow mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
@@ -98,9 +103,7 @@ export default function CertificateDetails() {
                   <td className="py-2 px-4">Trịnh Đình Anh</td>
                   <td className="py-2 px-4">10</td>
                   <td className="py-2 px-4">
-                    <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
-                      Chưa ký
-                    </span>
+                    <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Chưa ký</span>
                   </td>
                 </tr>
                 <tr className="border-b text-sm">
@@ -108,9 +111,7 @@ export default function CertificateDetails() {
                   <td className="py-2 px-4">Phạm Văn Minh</td>
                   <td className="py-2 px-4">8</td>
                   <td className="py-2 px-4">
-                    <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">
-                      Chưa ký
-                    </span>
+                    <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Chưa ký</span>
                   </td>
                 </tr>
               </tbody>
@@ -134,3 +135,4 @@ export default function CertificateDetails() {
     </div>
   )
 }
+
