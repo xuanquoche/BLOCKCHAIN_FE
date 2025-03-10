@@ -1,23 +1,25 @@
-import { Sidebar } from "@/components/sidebar"
-import "./globals.css"
-import type { Metadata } from "next"
+'use client'
 
-export const metadata: Metadata = {
-  title: "Education Management System",
-  description: "Training Department Management System",
-}
+import type { Metadata } from "next"
+import "./globals.css"
+import QueryProvider from '@/component/QueryProvider'
+import { useAuthCheck } from "@/hook/use-auth-check"
+
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  useAuthCheck()
   return (
     <html lang="en">
       <body>
         <div className="flex min-h-screen">
           <div className="flex-1">
-            {children}
+            <QueryProvider>
+              {children}
+            </QueryProvider>
           </div>
         </div>
       </body>

@@ -1,3 +1,5 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -7,9 +9,12 @@ import TextInputField from './text-input-field';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signIn } from '@/apis/auth';
+import { toast } from 'react-toastify';
 
 const SignInForm = () => {
     const router = useRouter();
+
 
     const formSchema = z.object({
         code: z.string({required_error: "ID is required"}).min(1, { message: "ID is required" }),
@@ -17,12 +22,8 @@ const SignInForm = () => {
             .string({
                 required_error: "Password is required"
             })
-            .min(8, { message: "Password must be at least 8 characters" })
+            .min(6, { message: "Password must be at least 8 characters" })
             .max(50, { message: "Password must be at most 50 characters" })
-            .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-            .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-            .regex(/\d/, { message: "Password must contain at least one digit" })
-            .regex(/[\W_]/, { message: "Password must contain at least one special character" })
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -34,7 +35,16 @@ const SignInForm = () => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values)
+        try {
+            const response = await signIn(values);
+            console.log("success", response)
+            localStorage.setItem('token', JSON.stringify(response.token));
+            localStorage.setItem('role', JSON.stringify(response.role));
+            toast.success('login success')
+            router.push('/admin');
+        } catch (error) {
+            console.log("login failed", error)
+        }
     };
 
     return (
