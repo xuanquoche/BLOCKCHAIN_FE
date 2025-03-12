@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { studentSchema, type StudentFormValues } from "@/lib/schemas"
+import { toast } from "react-toastify"
+import { useCreateUser } from "@/apis/client/admin"
 
 interface StudentFormProps {
   open: boolean
@@ -29,10 +31,29 @@ export function StudentForm({ open, onOpenChange }: StudentFormProps) {
     },
   })
 
+   const {mutate} = useCreateUser()
+
   function onSubmit(data: StudentFormValues) {
-    console.log(data)
-    onOpenChange(false)
-    form.reset()
+    const date = new Date(data.dateOfBirth)
+        const dateFormat = date.toISOString().split("T")[0];    
+         mutate({
+        name: data.fullName,
+        code: data.studentId,
+        password: data.password,
+        dateOfBirth: dateFormat,
+        role: "STUDENT"
+        },
+        {
+        onSuccess: (data: any) => {
+            toast.success("Thêm sinh viên thành công")
+            onOpenChange(false)
+        },
+        onError: (error) => {
+        console.log("Create student failed", error)
+        }
+        }
+        )
+        form.reset()
   }
 
   return (

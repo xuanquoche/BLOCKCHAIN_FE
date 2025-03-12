@@ -10,31 +10,35 @@ export function useAuthCheck() {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    console.log("token", token);
-    console.log("role", role);
-
     if (!token) {
-      router.replace("/sign-in"); 
-      return
+      router.replace("/sign-in");
     }
 
-    switch (role) {
+    const roleFormat = role?.replace(/"/g, "");
+    console.log("roleFormat", roleFormat)
+    console.log("MASTER")
+
+    if (roleFormat) {
+      let redirectPath = "/sign-in"; 
+      switch (roleFormat) {
         case "TEACHER":
-            router.replace("/teacher");
-            break;
-    
+          redirectPath = "/teacher";
+          break;
         case "STUDENT":
-            router.replace("/student");
-            break;
-        
+          redirectPath = "/student";
+          break;
         case "MASTER":
-            router.replace("/admin");
-            break;
-        
-        default:
-            router.replace("/sign-in");
-            break;
-    }
+          redirectPath = "/admin";  
+          break;
 
+        default :
+            redirectPath = "/sign-in";
+      }
+
+      console.log("redirect path", redirectPath)
+      if (window.location.pathname !== redirectPath) {
+        router.replace(redirectPath);
+      }
+    }
   }, [router]);
 }

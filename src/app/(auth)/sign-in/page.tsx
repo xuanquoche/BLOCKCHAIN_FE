@@ -1,9 +1,11 @@
 'use client';
 
 import SignInForm from '@/components/form/sign-in-form';
+import { useAuthCheck } from '@/hook/use-auth-check';
 import React from 'react';
 
 const SignInPage = () => {
+    useAuthCheck();
     return (
         <div className="shadow-lg p-8 sm:p-10 dark:bg-form-foreground rounded-xl flex gap-6 mx-5 w-[900px]">
             <div className="hidden sm:flex justify-center items-start flex-col w-1/2">
