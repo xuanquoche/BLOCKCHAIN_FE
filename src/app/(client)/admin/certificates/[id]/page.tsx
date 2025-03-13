@@ -6,9 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useParams } from "next/navigation"
+
+import CertificateImage from "@/components/certificate-image"
+
 import { useEffect } from "react"
 import { useGetDetailCertificate } from "@/apis/client/admin"
 import HuyChuong from "@/assets/images/huychuong.jpg"
+
 
 export default function CertificateDetails() {
   const params = useParams()
@@ -38,16 +42,11 @@ export default function CertificateDetails() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Logo</label>
-            <div className="border rounded-lg p-4 w-48 h-48 flex items-center justify-center">
-              <Image
-                src={HuyChuong}
-                alt="AI Logo"
-                width={120}
-                height={120}
-                className="object-contain"
-              />
-            </div>
+            <label className="block text-sm font-medium mb-1">Certificate Image</label>
+            <CertificateImage
+            issueDate="17-05-2003"
+            recipientName="Noone"
+            />
           </div>
         </div>
       </div>
