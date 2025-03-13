@@ -6,32 +6,39 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useParams } from "next/navigation"
+
 import CertificateImage from "@/components/certificate-image"
+
+import { useEffect } from "react"
+import { useGetDetailCertificate } from "@/apis/client/admin"
+import HuyChuong from "@/assets/images/huychuong.jpg"
+
 
 export default function CertificateDetails() {
   const params = useParams()
-  const certificateId = params.id
+  const certificateId = Array.isArray(params.id) ? params.id[0] : params.id ?? ""
+
+
+  const {data} = useGetDetailCertificate({id: certificateId})
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Chi tiết Chứng chỉ</h1>
       <p>Đang hiển thị thông tin chi tiết cho chứng chỉ có ID: {certificateId}</p>
-      {/* Add more detailed certificate information here */}
-      {/* Certificate Information */}
       <div className="bg-white rounded-md shadow mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1">Tên chứng chỉ</label>
-              <div className="text-gray-900">Đề Án Môn Trí Tuệ Nhân Tạo</div>
+              <div className="text-gray-900">{data?.certificate.name}</div>
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Mã giảng viên phụ trách</label>
-              <div className="text-gray-900">19050000</div>
+              <div className="text-gray-900">{data?.user.code}</div>
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Tên giảng viên phụ trách</label>
-              <div className="text-gray-900">Huỳnh Quang Đức</div>
+              <div className="text-gray-900">{data?.user.name}</div>
             </div>
           </div>
           <div>
@@ -40,7 +47,6 @@ export default function CertificateDetails() {
             issueDate="17-05-2003"
             recipientName="Noone"
             />
-
           </div>
         </div>
       </div>

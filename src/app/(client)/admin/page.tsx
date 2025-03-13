@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,6 +17,7 @@ const [studentModalOpen, setStudentModalOpen] = useState(false)
 const [certificateModalOpen, setCertificateModalOpen] = useState(false)
 
 const {data: teachers, isLoading: teacherLoading} = useGetUsersByRole({ role: 'TEACHER' })
+
 const {data: students, isLoading: studentLoading} = useGetUsersByRole({ role: 'STUDENT' })
 
 return (
@@ -147,13 +148,13 @@ return (
                     </thead>
                     <tbody>
                         {
-                        teacherLoading ? (
+                        studentLoading ? (
 
                         <tr>
                             <td className="py-2 px-4">No data available in table</td>
                         </tr>
                         ) : (
-                        teachers?.map((teacher) => (
+                        students?.map((teacher) => (
                         <tr className="border-b text-sm" key={teacher.id}>
                             <td className="py-2 px-4">{teacher.code}</td>
                             <td className="py-2 px-4">{teacher.name}</td>

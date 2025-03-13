@@ -29,9 +29,7 @@ instance.interceptors.request.use(
 );
 instance.interceptors.response.use(
     (response) => {
-        if (response && response.data) {
-            return response.data;
-        }
+        return response
     },
     async (error: AxiosError) => {
         return Promise.reject(error);

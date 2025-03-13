@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { certificateSchema, type CertificateFormValues } from "@/lib/schemas"
+import { newCertificateSchema, type NewCertificateFormValues } from "@/lib/schemas"
 import { Input } from "../ui/input"
+import { useCreateCertificate } from "@/apis/client/admin"
+import { toast } from "react-toastify"
 
 interface CertificateFormProps {
   open: boolean
@@ -16,17 +18,24 @@ interface CertificateFormProps {
 }
 
 export function NewCertificateForm({ open, onOpenChange }: CertificateFormProps) {
-  const form = useForm<CertificateFormValues>({
-    resolver: zodResolver(certificateSchema),
+  const form = useForm<NewCertificateFormValues>({
+    resolver: zodResolver(newCertificateSchema),
     defaultValues: {
       name: "",
     },
   })
 
-  function onSubmit(data: CertificateFormValues) {
-    console.log(data)
-    onOpenChange(false)
-    form.reset()
+  const {mutate} = useCreateCertificate()
+
+  function onSubmit(data: NewCertificateFormValues) {
+    mutate({name: data.name}, {onSuccess: (() => {
+      onOpenChange(false)
+      form.reset()
+      toast.success("Thêm chứng chỉ thành công")
+    }), onError: (error) => {
+      toast.error(String(error))
+    }
+    })
   }
 
   return (

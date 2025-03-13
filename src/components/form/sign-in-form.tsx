@@ -37,11 +37,33 @@ const SignInForm = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const response = await signIn(values);
-            console.log("success", response)
+            const { role, id: userId, code } = response;
+
+            const formatUserId = userId.replace(/"/g, '');
+            const formatCode = code.replace(/"/g, '');
+
             localStorage.setItem('token', JSON.stringify(response.token));
             localStorage.setItem('role', JSON.stringify(response.role));
+            localStorage.setItem('userId', JSON.stringify(formatUserId));
+            localStorage.setItem('code', JSON.stringify(formatCode));
             toast.success('login success')
-            router.push('/admin');
+
+            let redirectPath = "/sign-in";
+            switch (role) {
+                case "TEACHER":
+                    redirectPath = `/teacher/${formatUserId}`;
+                    break;
+                case "STUDENT":
+                    redirectPath = `/student/${formatUserId}`;
+                    break;
+                case "MASTER":
+                    redirectPath = "/admin";
+                    break;
+                default:
+                    redirectPath = "/sign-in";
+            }
+    
+            router.replace(redirectPath);
         } catch (error) {
             console.log("login failed", error)
         }

@@ -1,2 +1,7 @@
 export * from './create-user'
 export * from './get-users'
+export * from './create-cetificate'
+export * from './get-certificate-name'
+export * from './assign-certificate-to-teacher'
+export * from './get-certificate-teacher'
+export * from './get-detail-certificate'
