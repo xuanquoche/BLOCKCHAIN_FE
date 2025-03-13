@@ -29,7 +29,7 @@ export const useGetUserById = ({
         queryFn: async () => {
             const response = await instance.get(`${URL}/${teacherId}`);
             console.log("response ", response)
-            return response
+            return response.data
         },
         enabled: !! teacherId 
 

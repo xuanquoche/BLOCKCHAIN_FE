@@ -6,21 +6,78 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useParams } from "next/navigation"
-
 import CertificateImage from "@/components/certificate-image"
-
-import { useEffect } from "react"
-import { useGetDetailCertificate } from "@/apis/client/admin"
-import HuyChuong from "@/assets/images/huychuong.jpg"
+import { GetStudentInfoOfTeacherCertificateResponse, useCreateCertificateTeacherStudent, useGetDetailCertificate, useGetStudentInfoOfTeacherCertificate } from "@/apis/client/admin"
+import * as XLSX from "xlsx";
+import { useEffect, useRef, useState } from "react"
+import { toast } from "react-toastify"
+import { set } from "date-fns"
 
 
 export default function CertificateDetails() {
   const params = useParams()
   const certificateId = Array.isArray(params.id) ? params.id[0] : params.id ?? ""
+  const [isFetchData, setIsFetchData] = useState<boolean>(false)
+  
 
+  const ref = useRef<HTMLInputElement>(null)
 
   const {data} = useGetDetailCertificate({id: certificateId})
 
+  const {mutate} = useCreateCertificateTeacherStudent()
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const binaryStr = e.target?.result;
+      if (!binaryStr) return;
+
+      const workbook = XLSX.read(binaryStr, { type: "binary" });
+      const sheetName = workbook.SheetNames[0]; 
+      const sheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+      const filteredData = jsonData.map((item:any) => ({ id: item.id }));
+      mutate({
+        certificateTypeId: certificateId,
+        status: "PENDING",
+        users:filteredData,
+        teacherId: data?.user.id ?? ""
+      }, {onSuccess: () => {
+        toast.success("Nhập thông tin thành công")
+        setIsFetchData(true)
+      },
+      onError: (error: any) => {
+        toast.error("Nhập thông tin thất bại",error)
+      }
+      })
+
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  const handleChangeColorStatus = (status: string) => {
+    const statusColors: Record<string, string> = {
+      PENDING: "bg-yellow-100 text-yellow-800",
+      APPROVED: "bg-green-100 text-green-800",
+    };
+  
+    return statusColors[status] || "bg-gray-100 text-gray-800"; 
+  };
+  
+
+  const {data: studenCertificateData , refetch} = useGetStudentInfoOfTeacherCertificate({teacherId: data?.user.id ?? ""})
+
+  useEffect(() => {
+   if(isFetchData){
+    refetch()
+    setIsFetchData(false)
+   }
+  }, [isFetchData])
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Chi tiết Chứng chỉ</h1>
@@ -59,9 +116,11 @@ export default function CertificateDetails() {
             <Button variant="default" className="bg-green-500 hover:bg-green-600">
               Tạo Mới Chứng Chỉ
             </Button>
-            <Button variant="default" className="bg-blue-500 hover:bg-blue-600">
+            <Button variant="default" className="bg-blue-500 hover:bg-blue-600" onClick={() => ref.current?.click()}>
               Nhập danh sách chứng chỉ
             </Button>
+            <Input type="file" accept=".xlsx" onChange={handleFileUpload} className="hidden"  ref={ref}/>
+
           </div>
         </div>
 
@@ -96,27 +155,21 @@ export default function CertificateDetails() {
                 <tr className="border-b">
                   <th className="text-left py-2 px-4 font-medium text-sm">Mã sinh viên</th>
                   <th className="text-left py-2 px-4 font-medium text-sm">Họ tên và tên sinh viên</th>
-                  <th className="text-left py-2 px-4 font-medium text-sm">Điểm</th>
                   <th className="text-left py-2 px-4 font-medium text-sm">Trạng thái</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b text-sm">
-                  <td className="py-2 px-4">19050011</td>
-                  <td className="py-2 px-4">Trịnh Đình Anh</td>
-                  <td className="py-2 px-4">10</td>
-                  <td className="py-2 px-4">
-                    <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Chưa ký</span>
-                  </td>
-                </tr>
-                <tr className="border-b text-sm">
-                  <td className="py-2 px-4">19050026</td>
-                  <td className="py-2 px-4">Phạm Văn Minh</td>
-                  <td className="py-2 px-4">8</td>
-                  <td className="py-2 px-4">
-                    <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Chưa ký</span>
-                  </td>
-                </tr>
+                {studenCertificateData?.map((student: GetStudentInfoOfTeacherCertificateResponse, index) => (
+                  <tr key={index} className="border-b text-sm">
+                    <td className="py-2 px-4">{student.student.code}</td>
+                    <td className="py-2 px-4">{student.student.name}</td>
+                    <td className="py-2 px-4">
+                      <span className={`px-2 py-1 rounded-full text-xs ${handleChangeColorStatus(student.certificate.status)}`}>
+                        {student.certificate.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

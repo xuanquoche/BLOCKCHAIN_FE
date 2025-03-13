@@ -9,25 +9,40 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { QRCodeModal } from "@/components/qr-code-modal"
 import { useGetUserById } from "@/apis/client/teacher"
 import Avatar from '@/assets/images/hinhanh1.png'
+import { useGetStudentInfoOfTeacherCertificate } from "@/apis/client/admin"
+import { Button } from "@/components/custom/button"
 
 export default function TeacherDetails() {
   const params = useParams()
   const teacherId = params.id as string
 
-  const [qrModalOpen, setQrModalOpen] = useState(false)
+  const [qrModalOpen, setQrModalOpen] = useState<boolean>(false)
+  const [certificateId, setCertificateId] = useState<string>('')
 
   const {data} = useGetUserById({ teacherId: teacherId })
-  // useEffect(() => {
-  //   // Show the QR code modal when the page loads
-  //   setQrModalOpen(true)
-  // }, [])
+
+  const handleChangeColorStatus = (status: string) => {
+    const statusColors: Record<string, string> = {
+      PENDING: "bg-yellow-100 text-yellow-800",
+      APPROVED: "bg-green-100 text-green-800",
+    };
+  
+    return statusColors[status] || "bg-gray-100 text-gray-800"; 
+  };
+
+  const handleQrcode = (certificateId: string) => {
+    setQrModalOpen(true)
+    setCertificateId(certificateId)
+  }
+
+  const {data: studentData} = useGetStudentInfoOfTeacherCertificate({ teacherId: teacherId })
 
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold mb-6">Thông tin giáo viên</h1>
 
       {/* QR Code Modal */}
-      <QRCodeModal isOpen={qrModalOpen} onClose={() => setQrModalOpen(false)} teacherId={teacherId} />
+      <QRCodeModal isOpen={qrModalOpen} onClose={() => setQrModalOpen(false)} certificateId={certificateId} />
 
       {/* Teacher Information */}
       <div className="bg-white rounded-md shadow mb-8">
@@ -116,29 +131,25 @@ export default function TeacherDetails() {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-2 px-4 font-medium text-sm">Mã lớp</th>
-                  <th className="text-left py-2 px-4 font-medium text-sm">Tên lớp</th>
-                  <th className="text-left py-2 px-4 font-medium text-sm">Số sinh viên</th>
+                  <th className="text-left py-2 px-4 font-medium text-sm">Mã tín chỉ</th>
+                  <th className="text-left py-2 px-4 font-medium text-sm">Tên tín chỉ</th>
+                  <th className="text-left py-2 px-4 font-medium text-sm">Mã sinh viên</th>
+                  <th className="text-left py-2 px-4 font-medium text-sm">Tên Sinh viên</th>
                   <th className="text-left py-2 px-4 font-medium text-sm">Trạng thái</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b text-sm">
-                  <td className="py-2 px-4">AI2024-01</td>
-                  <td className="py-2 px-4">Trí tuệ nhân tạo - Nhóm 1</td>
-                  <td className="py-2 px-4">35</td>
-                  <td className="py-2 px-4">
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Đang diễn ra</span>
-                  </td>
-                </tr>
-                <tr className="border-b text-sm">
-                  <td className="py-2 px-4">ML2024-02</td>
-                  <td className="py-2 px-4">Machine Learning - Nhóm 2</td>
-                  <td className="py-2 px-4">40</td>
-                  <td className="py-2 px-4">
-                    <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs">Sắp diễn ra</span>
-                  </td>
-                </tr>
+                {studentData?.map((student, index) => (
+                  <tr key={index} className="border-b text-sm">
+                    <td className="py-2 px-4">{student.certificate.id}</td>
+                    <td className="py-2 px-4">{student.certificate.name}</td>
+                    <td className="py-2 px-4">{student.student.code}</td>
+                    <td className="py-2 px-4">{student.student.name}</td>
+                    <td className="py-2 px-4">
+                      <Button onClick={() => handleQrcode(student.certificate.id)} className={`px-2 py-1 ${handleChangeColorStatus(student?.certificate.status)} rounded-full text-xs`}>{student.certificate.status}</Button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

@@ -5,4 +5,5 @@ export const QUERY_KEYS = {
     GET_CERTIFICATE_NAME: 'get-certificate-name',
     GET_CERTIFICATE_TEACHER: 'get-certificate-teacher',
     GET_CERTIFICATE_BY_ID: 'get-certificate-by-id',
+    GET_STUDENT_INFO_OF_TEACHER_CERTIFICATE: 'get-student-info-of-teacher-certificate',
 }

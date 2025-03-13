@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button"
 interface QRCodeModalProps {
   isOpen: boolean
   onClose: () => void
-  teacherId: string
+  certificateId: string
 }
 
-export function QRCodeModal({ isOpen, onClose, teacherId }: QRCodeModalProps) {
+export function QRCodeModal({ isOpen, onClose, certificateId }: QRCodeModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -17,7 +17,7 @@ export function QRCodeModal({ isOpen, onClose, teacherId }: QRCodeModalProps) {
           <DialogTitle>Xác nhận Giáo viên</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col items-center justify-center p-4">
-          <QRCode value={teacherId} size={256} />
+          <QRCode value={certificateId} size={256} />
           <p className="mt-4 text-sm text-gray-500">
             Quét mã QR này để xác nhận danh tính giáo viên
           </p>

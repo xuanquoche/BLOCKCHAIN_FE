@@ -13,6 +13,7 @@ export function Sidebar() {
     localStorage.removeItem('token')
     localStorage.removeItem('role')
     localStorage.removeItem('userId')
+    localStorage.removeItem('code')
     router.push('/sign-in')
   }
 
