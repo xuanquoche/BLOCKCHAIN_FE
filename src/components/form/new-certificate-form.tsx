@@ -15,12 +15,11 @@ interface CertificateFormProps {
   onOpenChange: (open: boolean) => void
 }
 
-export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
+export function NewCertificateForm({ open, onOpenChange }: CertificateFormProps) {
   const form = useForm<CertificateFormValues>({
     resolver: zodResolver(certificateSchema),
     defaultValues: {
       name: "",
-      teacherId: "",
     },
   })
 
@@ -44,35 +43,14 @@ export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
               render={({ field }) => (
                 <FormItem className="w-[100%]">
                   <FormLabel>Tên chứng chỉ</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value} >
-                    <FormControl className="w-[100%]">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Chọn chứng chỉ"  />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="ai">Chứng chỉ Trí tuệ nhân tạo</SelectItem>
-                      <SelectItem value="web">Chứng chỉ Phát triển Web</SelectItem>
-                      <SelectItem value="data">Chứng chỉ Khoa học dữ liệu</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="teacherId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mã giáo viên phụ trách</FormLabel>
                   <FormControl>
-                    <Input placeholder="Mã giáo viên" {...field} />
+                    <Input placeholder="Tên tín chỉ" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            
             <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Hủy

@@ -6,7 +6,7 @@ import { Search, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CertificateForm } from "@/components/form/certificate-form"
+import { NewCertificateForm } from "@/components/form/new-certificate-form"
 import { StatusBadge } from "@/components/ui/status-badge"
 
 // Mock data for certificates
@@ -171,7 +171,7 @@ export default function CertificatesList() {
         </div>
       </div>
 
-      <CertificateForm open={certificateModalOpen} onOpenChange={setCertificateModalOpen} />
+      <NewCertificateForm open={certificateModalOpen} onOpenChange={setCertificateModalOpen} />
     </div>
   )
 }

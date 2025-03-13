@@ -1,7 +1,16 @@
+'use client'
+
 import { ChevronRight } from "lucide-react"
 import Link from "next/link"
+import { Button } from "./custom/button"
 
 export function Sidebar() {
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('role')
+  }
+
   return (
     <div className="w-64 bg-blue-600 text-white h-screen fixed left-0 top-0">
       <div className="p-4 flex items-center gap-2">
@@ -37,6 +46,13 @@ export function Sidebar() {
             </div>
           </div>
         </Link>
+
+          <div className="px-4 py-2 hover:bg-blue-700 block">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogout} >
+              <span className="text-sm">Đăng xuất</span>
+              <ChevronRight className="w-4 h-4 ml-auto" />
+            </div>
+          </div>
       </div>
     </div>
   )
