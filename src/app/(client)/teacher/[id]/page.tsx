@@ -148,7 +148,7 @@ export default function TeacherDetails() {
                     <td className="py-2 px-4">{student.student.code}</td>
                     <td className="py-2 px-4">{student.student.name}</td>
                     <td className="py-2 px-4">
-                      <Button onClick={() => handleQrcode(student.certificate.id)} className={`px-2 py-1 ${handleChangeColorStatus(student?.certificate.status)} rounded-full text-xs`}>{student.certificate.status}</Button>
+                      <Button onClick={() => handleQrcode(student.certificate.id)} className={`px-2 py-1 ${handleChangeColorStatus(student?.certificate.status)} rounded-full text-xs`} disabled= {student.certificate.status !== "PENDING" ? true : false}>{student.certificate.status}</Button>
                     </td>
                   </tr>
                 ))}
