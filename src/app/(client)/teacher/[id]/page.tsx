@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { useParams } from "next/navigation"
 import { Search, Mail, Phone, MapPin, Calendar, Book } from "lucide-react"
@@ -36,6 +36,8 @@ export default function TeacherDetails() {
   }
 
   const {data: studentData} = useGetStudentInfoOfTeacherCertificate({ teacherId: teacherId })
+
+  useEffect(() => {console.log("student data ", studentData)},[studentData])
 
   return (
     <div className="p-6">
@@ -142,7 +144,7 @@ export default function TeacherDetails() {
                 {studentData?.map((student, index) => (
                   <tr key={index} className="border-b text-sm">
                     <td className="py-2 px-4">{student.certificate.id}</td>
-                    <td className="py-2 px-4">{student.certificate.name}</td>
+                    <td className="py-2 px-4">{student.certificateType.name}</td>
                     <td className="py-2 px-4">{student.student.code}</td>
                     <td className="py-2 px-4">{student.student.name}</td>
                     <td className="py-2 px-4">
