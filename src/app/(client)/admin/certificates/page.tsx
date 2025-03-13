@@ -8,65 +8,17 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { NewCertificateForm } from "@/components/form/new-certificate-form"
 import { StatusBadge } from "@/components/ui/status-badge"
+import { useGetCertificateTeacher } from "@/apis/client/admin"
 
 // Mock data for certificates
-const certificatesData = [
-  {
-    id: "CERT001",
-    name: "Chứng chỉ Trí tuệ nhân tạo",
-    teacherId: "T001",
-    teacherName: "Huỳnh Quang Đức",
-    status: "active",
-    issuedCount: 25,
-  },
-  {
-    id: "CERT002",
-    name: "Chứng nhận Machine Learning",
-    teacherId: "T002",
-    teacherName: "Nguyễn Thị Mai",
-    status: "active",
-    issuedCount: 30,
-  },
-  {
-    id: "CERT003",
-    name: "Chứng chỉ Deep Learning",
-    teacherId: "T003",
-    teacherName: "Trần Văn An",
-    status: "inactive",
-    issuedCount: 0,
-  },
-  {
-    id: "CERT004",
-    name: "Chứng nhận Xử lý ngôn ngữ tự nhiên",
-    teacherId: "T004",
-    teacherName: "Lê Thị Hương",
-    status: "active",
-    issuedCount: 15,
-  },
-  {
-    id: "CERT005",
-    name: "Chứng chỉ Thị giác máy tính",
-    teacherId: "T005",
-    teacherName: "Phạm Minh Tuấn",
-    status: "active",
-    issuedCount: 20,
-  },
-]
 
 export default function CertificatesList() {
   const [searchTerm, setSearchTerm] = useState("")
   const [status, setStatus] = useState("all")
   const [certificateModalOpen, setCertificateModalOpen] = useState(false)
   const router = useRouter()
-
-  // Filter certificates based on search term and status
-  const filteredCertificates = certificatesData.filter(
-    (certificate) =>
-      (certificate.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        certificate.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        certificate.teacherName.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (status === "all" || certificate.status === status),
-  )
+  
+  const {data: certificatesTeacherData} = useGetCertificateTeacher()
 
   const handleViewDetails = (certificateId: string) => {
     router.push(`/admin/certificates/${certificateId}`)
@@ -121,25 +73,17 @@ export default function CertificatesList() {
                   <th className="text-left py-2 px-4 font-medium text-sm">Mã chứng chỉ</th>
                   <th className="text-left py-2 px-4 font-medium text-sm">Tên chứng chỉ</th>
                   <th className="text-left py-2 px-4 font-medium text-sm">Giáo viên phụ trách</th>
-                  <th className="text-left py-2 px-4 font-medium text-sm">Trạng thái</th>
-                  <th className="text-left py-2 px-4 font-medium text-sm">Số lượng đã cấp</th>
                   <th className="text-left py-2 px-4 font-medium text-sm">Hành động</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredCertificates.map((certificate) => (
-                  <tr key={certificate.id} className="border-b text-sm">
-                    <td className="py-2 px-4">{certificate.id}</td>
-                    <td className="py-2 px-4">{certificate.name}</td>
-                    <td className="py-2 px-4">{certificate.teacherName}</td>
+                {certificatesTeacherData?.map((certificate, index) => (
+                  <tr key={index} className="border-b text-sm">
+                    <td className="py-2 px-4">{certificate.certificate.id}</td>
+                    <td className="py-2 px-4 gray">{certificate.certificate.name}</td>
+                    <td className="py-2 px-4">{certificate.user.name}</td>
                     <td className="py-2 px-4">
-                      <StatusBadge variant={certificate.status === "active" ? "success" : "danger"}>
-                        {certificate.status === "active" ? "Đang hoạt động" : "Không hoạt động"}
-                      </StatusBadge>
-                    </td>
-                    <td className="py-2 px-4">{certificate.issuedCount}</td>
-                    <td className="py-2 px-4">
-                      <Button variant="outline" size="sm" onClick={() => handleViewDetails(certificate.id)}>
+                      <Button variant="outline" size="sm" onClick={() => handleViewDetails(certificate.certificate.id)}>
                         Xem chi tiết
                       </Button>
                     </td>
@@ -149,7 +93,7 @@ export default function CertificatesList() {
             </table>
           </div>
 
-          {filteredCertificates.length === 0 && (
+          {certificatesTeacherData?.length === 0 && (
             <div className="text-center py-4 text-gray-500">
               Không tìm thấy chứng chỉ nào phù hợp với tìm kiếm của bạn.
             </div>
@@ -157,7 +101,7 @@ export default function CertificatesList() {
 
           <div className="flex justify-between items-center mt-4 text-sm">
             <div>
-              Hiển thị {filteredCertificates.length} trên tổng số {certificatesData.length} chứng chỉ
+              Hiển thị {certificatesTeacherData?.length} trên tổng số {certificatesTeacherData?.length} chứng chỉ
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" disabled>

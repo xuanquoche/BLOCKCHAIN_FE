@@ -1,12 +1,14 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import { useParams } from "next/navigation"
 import { Search, Mail, Phone, MapPin, Calendar, Book } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { QRCodeModal } from "@/components/qr-code-modal"
+import { useGetUserById } from "@/apis/client/teacher"
+import Avatar from '@/assets/images/hinhanh1.png'
 
 export default function TeacherDetails() {
   const params = useParams()
@@ -14,10 +16,11 @@ export default function TeacherDetails() {
 
   const [qrModalOpen, setQrModalOpen] = useState(false)
 
-  useEffect(() => {
-    // Show the QR code modal when the page loads
-    setQrModalOpen(true)
-  }, [])
+  const {data} = useGetUserById({ teacherId: teacherId })
+  // useEffect(() => {
+  //   // Show the QR code modal when the page loads
+  //   setQrModalOpen(true)
+  // }, [])
 
   return (
     <div className="p-6">
@@ -32,7 +35,7 @@ export default function TeacherDetails() {
           <div>
             <div className="border rounded-lg p-4 w-full aspect-square flex items-center justify-center">
               <Image
-                src="/placeholder.svg?height=200&width=200"
+                src={Avatar}
                 alt="Teacher Photo"
                 width={200}
                 height={200}
@@ -42,13 +45,13 @@ export default function TeacherDetails() {
           </div>
           <div className="md:col-span-2 space-y-4">
             <div>
-              <h2 className="text-2xl font-bold">Huỳnh Quang Đức</h2>
+              <h2 className="text-2xl font-bold">{data?.name}</h2>
               <p className="text-gray-500">Giảng viên</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <Mail className="w-5 h-5 text-gray-400" />
-                <span>huynhquangduc@example.com</span>
+                <span>{data?.code}@gmail.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-5 h-5 text-gray-400" />
@@ -60,7 +63,7 @@ export default function TeacherDetails() {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-gray-400" />
-                <span>Ngày sinh: 01/01/1980</span>
+                <span>Ngày sinh: {data?.dateOfBirth}</span>
               </div>
             </div>
             <div className="pt-4 border-t">

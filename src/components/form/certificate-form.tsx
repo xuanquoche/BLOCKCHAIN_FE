@@ -3,12 +3,14 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { certificateSchema, type CertificateFormValues } from "@/lib/schemas"
 import { Input } from "../ui/input"
+import { useAssignCertificateToTeacher, useGetCertificateName } from "@/apis/client/admin"
+import { toast } from "react-toastify"
+import { Button } from "../custom/button"
 
 interface CertificateFormProps {
   open: boolean
@@ -24,10 +26,19 @@ export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
     },
   })
 
+  const {data, isLoading} = useGetCertificateName()
+
+  const {mutate} = useAssignCertificateToTeacher()
+
   function onSubmit(data: CertificateFormValues) {
-    console.log(data)
-    onOpenChange(false)
-    form.reset()
+    mutate({
+      certificateTypeId: data.name,
+      code: data.teacherId,
+    }, {onSuccess: () => {
+      toast.success("Thêm chứng chỉ thành công")
+      onOpenChange(false)
+      form.reset()
+    }, onError: (error: any) => {console.log("add fail",error)}})
   }
 
   return (
@@ -51,9 +62,11 @@ export function CertificateForm({ open, onOpenChange }: CertificateFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="ai">Chứng chỉ Trí tuệ nhân tạo</SelectItem>
-                      <SelectItem value="web">Chứng chỉ Phát triển Web</SelectItem>
-                      <SelectItem value="data">Chứng chỉ Khoa học dữ liệu</SelectItem>
+                      {
+                        data?.map((item) => (
+                          <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>
+                        ))
+                      }
                     </SelectContent>
                   </Select>
                   <FormMessage />

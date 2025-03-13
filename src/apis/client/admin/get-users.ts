@@ -27,7 +27,8 @@ export const useGetUsersByRole = ({
     return useQuery({
         queryKey: [QUERY_KEYS.GET_TEACHERS, role],
         queryFn: async () => {
-            return await instance.get(`${URL}?role=${role}`);
+            const response = await instance.get(`${URL}/${role}`);
+            return response.data;
         },
         enabled: !!role
     });

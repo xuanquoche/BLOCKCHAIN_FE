@@ -3,12 +3,17 @@
 import { ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { Button } from "./custom/button"
+import { useRouter } from "next/navigation"
 
 export function Sidebar() {
+
+  const router = useRouter()
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('role')
+    localStorage.removeItem('userId')
+    router.push('/sign-in')
   }
 
   return (

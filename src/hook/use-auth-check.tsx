@@ -9,23 +9,23 @@ export function useAuthCheck() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const userId = localStorage.getItem("userId");
 
     if (!token) {
       router.replace("/sign-in");
     }
 
     const roleFormat = role?.replace(/"/g, "");
-    console.log("roleFormat", roleFormat)
-    console.log("MASTER")
+    const formatUsserId = userId?.replace(/"/g, "");
 
     if (roleFormat) {
       let redirectPath = "/sign-in"; 
       switch (roleFormat) {
         case "TEACHER":
-          redirectPath = "/teacher";
+          redirectPath = `/teacher/${formatUsserId}`;
           break;
         case "STUDENT":
-          redirectPath = "/student";
+          redirectPath = `/student/${formatUsserId}`;
           break;
         case "MASTER":
           redirectPath = "/admin";  

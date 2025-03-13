@@ -14,6 +14,8 @@ interface SignInResponse {
     refreshToken: string;
     expireAt: number;
     role: string;
+    id: string;
+    code: string;
 }
 
 const URL = '/auth/sign-in';
