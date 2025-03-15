@@ -26,7 +26,7 @@ export const studentSchema = z.object({
 
 export const certificateSchema = z.object({
   name: z.string().min(2, "Tên chứng chỉ phải có ít nhất 2 ký tự"),
-  teacherId: z.string().min(8, "Mã số giảng viên phải có ít nhất 8 ký tự"),
+  teacherId: z.string().min(0, "Mã số giảng viên phải có ít nhất 8 ký tự"),
 })
 
 export const newCertificateSchema = z.object({

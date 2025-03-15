@@ -22,7 +22,7 @@ const SignInForm = () => {
             .string({
                 required_error: "Password is required"
             })
-            .min(6, { message: "Password must be at least 8 characters" })
+            .min(0, { message: "Password must be at least 8 characters" })
             .max(50, { message: "Password must be at most 50 characters" })
     });
 

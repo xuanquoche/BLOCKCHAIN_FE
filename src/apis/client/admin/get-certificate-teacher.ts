@@ -25,7 +25,7 @@ interface GetCertificateTeacherResponse {
     }
 }
 
-const URL = 'certificate/teacherCertificate';
+const URL = 'certificate/teacherCertificate111/all';
 export const useGetCertificateTeacher = (): UseQueryResult<GetCertificateTeacherResponse[]> => {
     return useQuery({
         queryKey: [QUERY_KEYS.GET_CERTIFICATE_TEACHER],

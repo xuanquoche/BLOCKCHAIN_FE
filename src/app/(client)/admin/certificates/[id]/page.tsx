@@ -11,7 +11,6 @@ import { GetStudentInfoOfTeacherCertificateResponse, useCreateCertificateTeacher
 import * as XLSX from "xlsx";
 import { useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
-import { set } from "date-fns"
 
 
 export default function CertificateDetails() {
@@ -21,9 +20,11 @@ export default function CertificateDetails() {
   
 
   const ref = useRef<HTMLInputElement>(null)
-
+  console.log("Id",certificateId);
+  
   const {data} = useGetDetailCertificate({id: certificateId})
 
+  
   const {mutate} = useCreateCertificateTeacherStudent()
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

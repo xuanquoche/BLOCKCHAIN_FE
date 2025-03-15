@@ -27,7 +27,7 @@ interface TeacherIdResponse {
     password: string;
 }
 
-const URL = 'certificate/teacherCertificate';
+const URL = 'certificate/teacherCertificate/create';
 const GET_TEACHER_ID_URL = 'users/code'
 
 const getIdTeacherByCode = async (code: string) => {

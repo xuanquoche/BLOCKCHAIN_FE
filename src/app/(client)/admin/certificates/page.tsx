@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { NewCertificateForm } from "@/components/form/new-certificate-form"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { useGetCertificateTeacher } from "@/apis/client/admin"
-
 // Mock data for certificates
 
 export default function CertificatesList() {
@@ -19,7 +18,6 @@ export default function CertificatesList() {
   const router = useRouter()
   
   const {data: certificatesTeacherData} = useGetCertificateTeacher()
-
   const handleViewDetails = (certificateId: string) => {
     router.push(`/admin/certificates/${certificateId}`)
   }

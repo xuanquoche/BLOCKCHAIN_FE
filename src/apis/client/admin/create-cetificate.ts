@@ -12,7 +12,7 @@ interface CreateCertificateResponse {
     name: string;
 }
 
-const URL = '/certificate/type';
+const URL = '/certificate/type/create';
 
 export const useCreateCertificate = (): UseMutationResult<CreateCertificateResponse, unknown, CreateCertificateArgs> => {
     return useMutation<CreateCertificateResponse, unknown, CreateCertificateArgs>({
