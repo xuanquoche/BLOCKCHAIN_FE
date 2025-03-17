@@ -7,6 +7,7 @@ interface CreateCertificateTeacherStudentArgs {
     certificateTypeId: string;
     users: {
         id: string
+        score: number
     }[];
 }
 
@@ -15,6 +16,7 @@ interface CreateCertificateTeacherStudentResponse {
     createdAt: number;
     updatedAt: number;
     name: string;
+    score?: number;
 }
 
 const URL = 'certificate/teacher';

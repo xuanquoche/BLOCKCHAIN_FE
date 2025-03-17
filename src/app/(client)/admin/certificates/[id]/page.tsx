@@ -41,7 +41,7 @@ export default function CertificateDetails() {
       const sheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(sheet);
 
-      const filteredData = jsonData.map((item:any) => ({ id: item.id }));
+      const filteredData = jsonData.map((item:any) => ({ id: item.id, score:item.score }));
       mutate({
         certificateTypeId: certificateId,
         status: "PENDING",
